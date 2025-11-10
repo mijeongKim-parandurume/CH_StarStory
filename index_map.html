@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive map of Korea with region selection">
+    <title>Interactive Korea Map</title>
+    <link rel="stylesheet" href="styles_map.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="title">대한민국 지역 지도</h1>
+        <button id="resetBtn" class="reset-btn" aria-label="선택 초기화">
+            <span aria-hidden="true">↻</span> 초기화
+        </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- SVG Map Container -->
+        <div id="mapContainer" class="map-container" role="application" aria-label="대한민국 지역 지도">
+            <div class="loading">지도를 불러오는 중...</div>
+        </div>
+
+        <!-- Info Panel -->
+        <aside id="infoPanel" class="info-panel" role="region" aria-live="polite" aria-label="선택된 지역 정보">
+            <div class="info-content">
+                <h2 class="info-title">지역을 선택하세요</h2>
+                <p class="info-description">지도에서 원하는 지역을 클릭하거나 탭하세요</p>
+                <div class="info-details" style="display: none;">
+                    <dl>
+                        <dt>지역명:</dt>
+                        <dd id="regionLabel">-</dd>
+                        <dt>별자리:</dt>
+                        <dd id="constellationLabel">-</dd>
+                    </dl>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- Keyboard Help (optional) -->
+    <div class="keyboard-help" role="complementary">
+        <details>
+            <summary>키보드 단축키</summary>
+            <ul>
+                <li><kbd>Tab</kbd> - 지역 이동</li>
+                <li><kbd>Enter</kbd> / <kbd>Space</kbd> - 지역 선택</li>
+                <li><kbd>Esc</kbd> - 선택 해제</li>
+            </ul>
+        </details>
+    </div>
+
+    <script src="app_map.js"></script>
+</body>
+</html>

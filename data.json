@@ -1,0 +1,323 @@
+{
+  "regions": [
+    {
+      "id": "gwangmyeong",
+      "region_name_kr": "광명시",
+      "region_name_en": "Gwangmyeong",
+      "story_title": "애기 별자리",
+      "story_text": "별을 사랑한 아이의 눈빛이 밤하늘에 남았대요. 지금도 이곳의 하늘은 조금 더 밝게 빛나죠. 어린 아이들의 순수한 마음이 별이 되어 우리를 지켜봅니다.",
+      "story_text_lines": [
+        "별을 사랑한 아이의 눈빛이 밤하늘에 남았대요.",
+        "지금도 이곳의 하늘은 조금 더 밝게 빛나죠.",
+        "어린 아이들의 순수한 마음이 별이 되어 우리를 지켜봅니다."
+      ],
+      "coordinates": {
+        "x": 280,
+        "y": 450
+      },
+      "theme_color": "#FFD93D",
+      "constellation_shape": {
+        "type": "custom",
+        "stars": [
+          {"x": 100, "y": 50},
+          {"x": 140, "y": 80},
+          {"x": 180, "y": 60},
+          {"x": 160, "y": 100},
+          {"x": 120, "y": 90}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 0]
+        ],
+        "style": "soft_curve"
+      },
+      "audio_narration": "assets/audio/narration/gwangmyeong_story.mp3",
+      "audio_duration": 12,
+      "mini_symbol": "👶",
+      "symbol_unicode": "U+1F476",
+      "celestial_connection": "애기별 (Child Star)",
+      "historical_note": "광명 지역의 전설에 따르면, 이 별은 어린 아이들의 수호성이라고 전해집니다."
+    },
+    {
+      "id": "gaeseong",
+      "region_name_kr": "개성",
+      "region_name_en": "Gaeseong",
+      "story_title": "고려의 별",
+      "story_text": "천 년 전 이곳에서 왕들이 하늘을 보며 나라의 미래를 점쳤어요. 그 별빛은 지금도 역사의 지혜를 속삭입니다.",
+      "story_text_lines": [
+        "천 년 전 이곳에서 왕들이 하늘을 보며",
+        "나라의 미래를 점쳤어요.",
+        "그 별빛은 지금도 역사의 지혜를 속삭입니다."
+      ],
+      "coordinates": {
+        "x": 320,
+        "y": 280
+      },
+      "theme_color": "#A8E6CF",
+      "constellation_shape": {
+        "type": "geometric",
+        "stars": [
+          {"x": 150, "y": 60},
+          {"x": 200, "y": 60},
+          {"x": 200, "y": 110},
+          {"x": 150, "y": 110}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 0]
+        ],
+        "style": "architectural"
+      },
+      "audio_narration": "assets/audio/narration/gaeseong_story.mp3",
+      "audio_duration": 10,
+      "mini_symbol": "🏛️",
+      "symbol_unicode": "U+1F3DB",
+      "celestial_connection": "태미원 (Palace of Purple Tenuity)",
+      "historical_note": "고려시대 천문 관측의 중심지였던 개성의 천문학적 유산"
+    },
+    {
+      "id": "hanyang",
+      "region_name_kr": "한양",
+      "region_name_en": "Hanyang (Seoul)",
+      "story_title": "왕도의 하늘",
+      "story_text": "조선의 하늘 아래, 백성들의 꿈과 왕의 뜻이 만났습니다. 궁궐 위로 빛나던 별들은 오백 년 이야기를 간직하고 있어요.",
+      "story_text_lines": [
+        "조선의 하늘 아래,",
+        "백성들의 꿈과 왕의 뜻이 만났습니다.",
+        "궁궐 위로 빛나던 별들은 오백 년 이야기를 간직하고 있어요."
+      ],
+      "coordinates": {
+        "x": 380,
+        "y": 350
+      },
+      "theme_color": "#FF6B9D",
+      "constellation_shape": {
+        "type": "crown",
+        "stars": [
+          {"x": 175, "y": 90},
+          {"x": 160, "y": 70},
+          {"x": 175, "y": 50},
+          {"x": 190, "y": 70},
+          {"x": 205, "y": 50},
+          {"x": 220, "y": 70},
+          {"x": 205, "y": 90}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 0]
+        ],
+        "style": "royal"
+      },
+      "audio_narration": "assets/audio/narration/hanyang_story.mp3",
+      "audio_duration": 14,
+      "mini_symbol": "👑",
+      "symbol_unicode": "U+1F451",
+      "celestial_connection": "자미원 (Purple Forbidden Enclosure)",
+      "historical_note": "천상열차분야지도가 제작된 조선시대 서울의 천문학적 중요성"
+    },
+    {
+      "id": "gyeongju",
+      "region_name_kr": "경주",
+      "region_name_en": "Gyeongju",
+      "story_title": "신라의 달과 별",
+      "story_text": "천 년 고도의 밤하늘에는 신라인들의 지혜가 담겨 있어요. 첨성대를 통해 본 별들이 지금도 이곳을 비춥니다.",
+      "story_text_lines": [
+        "천 년 고도의 밤하늘에는",
+        "신라인들의 지혜가 담겨 있어요.",
+        "첨성대를 통해 본 별들이 지금도 이곳을 비춥니다."
+      ],
+      "coordinates": {
+        "x": 520,
+        "y": 520
+      },
+      "theme_color": "#C5A3FF",
+      "constellation_shape": {
+        "type": "circular",
+        "stars": [
+          {"x": 175, "y": 50},
+          {"x": 210, "y": 65},
+          {"x": 220, "y": 100},
+          {"x": 200, "y": 130},
+          {"x": 165, "y": 130},
+          {"x": 145, "y": 100},
+          {"x": 155, "y": 65}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 0]
+        ],
+        "style": "temple"
+      },
+      "audio_narration": "assets/audio/narration/gyeongju_story.mp3",
+      "audio_duration": 13,
+      "mini_symbol": "🌙",
+      "symbol_unicode": "U+1F319",
+      "celestial_connection": "첨성단 (Celestial Observatory)",
+      "historical_note": "동양에서 가장 오래된 천문대인 첨성대가 있는 경주의 천문 전통"
+    },
+    {
+      "id": "gangneung",
+      "region_name_kr": "강릉",
+      "region_name_en": "Gangneung",
+      "story_title": "바다와 별빛",
+      "story_text": "동해의 파도 소리와 별빛이 만나는 곳. 어부들은 별을 보며 길을 찾고, 별들은 바다에 반짝이며 답했어요.",
+      "story_text_lines": [
+        "동해의 파도 소리와 별빛이 만나는 곳.",
+        "어부들은 별을 보며 길을 찾고,",
+        "별들은 바다에 반짝이며 답했어요."
+      ],
+      "coordinates": {
+        "x": 600,
+        "y": 380
+      },
+      "theme_color": "#6BCFFF",
+      "constellation_shape": {
+        "type": "wave",
+        "stars": [
+          {"x": 140, "y": 80},
+          {"x": 160, "y": 70},
+          {"x": 180, "y": 80},
+          {"x": 200, "y": 70},
+          {"x": 220, "y": 80},
+          {"x": 240, "y": 90}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 5]
+        ],
+        "style": "flowing"
+      },
+      "audio_narration": "assets/audio/narration/gangneung_story.mp3",
+      "audio_duration": 11,
+      "mini_symbol": "🌊",
+      "symbol_unicode": "U+1F30A",
+      "celestial_connection": "동방창룡 (Azure Dragon of the East)",
+      "historical_note": "동해안 지역에서 별을 이용한 항해와 어로 활동의 역사"
+    },
+    {
+      "id": "jeju",
+      "region_name_kr": "제주",
+      "region_name_en": "Jeju",
+      "story_title": "화산과 별",
+      "story_text": "한라산 위로 쏟아지는 별빛. 섬사람들은 화산의 기운과 하늘의 빛이 하나라고 믿었답니다.",
+      "story_text_lines": [
+        "한라산 위로 쏟아지는 별빛.",
+        "섬사람들은 화산의 기운과",
+        "하늘의 빛이 하나라고 믿었답니다."
+      ],
+      "coordinates": {
+        "x": 350,
+        "y": 720
+      },
+      "theme_color": "#FF8C42",
+      "constellation_shape": {
+        "type": "spiral",
+        "stars": [
+          {"x": 175, "y": 50},
+          {"x": 190, "y": 70},
+          {"x": 200, "y": 90},
+          {"x": 195, "y": 110},
+          {"x": 180, "y": 120},
+          {"x": 160, "y": 115},
+          {"x": 150, "y": 95},
+          {"x": 155, "y": 70}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]
+        ],
+        "style": "volcanic"
+      },
+      "audio_narration": "assets/audio/narration/jeju_story.mp3",
+      "audio_duration": 10,
+      "mini_symbol": "🌋",
+      "symbol_unicode": "U+1F30B",
+      "celestial_connection": "남극노인성 (Canopus - Southern Star)",
+      "historical_note": "제주도에서만 볼 수 있는 남극노인성과 섬의 천문 문화"
+    },
+    {
+      "id": "jeonju",
+      "region_name_kr": "전주",
+      "region_name_en": "Jeonju",
+      "story_title": "소리와 별",
+      "story_text": "판소리 가락이 별빛처럼 퍼져나가는 곳. 예술가들의 열정이 하늘에 닿아 별이 되었어요.",
+      "story_text_lines": [
+        "판소리 가락이 별빛처럼 퍼져나가는 곳.",
+        "예술가들의 열정이 하늘에 닿아",
+        "별이 되었어요."
+      ],
+      "coordinates": {
+        "x": 340,
+        "y": 550
+      },
+      "theme_color": "#98D8C8",
+      "constellation_shape": {
+        "type": "musical",
+        "stars": [
+          {"x": 160, "y": 60},
+          {"x": 170, "y": 80},
+          {"x": 185, "y": 75},
+          {"x": 200, "y": 90},
+          {"x": 215, "y": 70}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4]
+        ],
+        "style": "melodic"
+      },
+      "audio_narration": "assets/audio/narration/jeonju_story.mp3",
+      "audio_duration": 9,
+      "mini_symbol": "🎶",
+      "symbol_unicode": "U+1F3B6",
+      "celestial_connection": "천시원 (Celestial Market)",
+      "historical_note": "전통 예술과 문화가 발달한 전주의 문화적 별자리"
+    },
+    {
+      "id": "buyeo",
+      "region_name_kr": "부여",
+      "region_name_en": "Buyeo",
+      "story_title": "백제의 별",
+      "story_text": "백제의 마지막 하늘. 낙화암 위로 떨어진 별들이 강물에 비쳐 영원한 아름다움이 되었답니다.",
+      "story_text_lines": [
+        "백제의 마지막 하늘.",
+        "낙화암 위로 떨어진 별들이",
+        "강물에 비쳐 영원한 아름다움이 되었답니다."
+      ],
+      "coordinates": {
+        "x": 300,
+        "y": 480
+      },
+      "theme_color": "#E8B4B8",
+      "constellation_shape": {
+        "type": "organic",
+        "stars": [
+          {"x": 170, "y": 50},
+          {"x": 190, "y": 65},
+          {"x": 185, "y": 85},
+          {"x": 165, "y": 95},
+          {"x": 145, "y": 80},
+          {"x": 150, "y": 60}
+        ],
+        "connections": [
+          [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]
+        ],
+        "style": "flowing"
+      },
+      "audio_narration": "assets/audio/narration/buyeo_story.mp3",
+      "audio_duration": 11,
+      "mini_symbol": "🏺",
+      "symbol_unicode": "U+1F3FA",
+      "celestial_connection": "백호 (White Tiger of the West)",
+      "historical_note": "백제의 천문학과 낙화암의 전설이 만나는 부여의 별"
+    }
+  ],
+  "completion_message": {
+    "main_text": "모든 별은, 우리 땅의 이야기였습니다.",
+    "sub_text": "우리의 하늘과 땅, 그 별빛은 아직도 이어지고 있습니다.",
+    "audio": "assets/audio/completion/completion_message.mp3"
+  },
+  "intro_transition": {
+    "text": "이제, 하늘의 이야기가 땅으로 내려옵니다.",
+    "duration_ms": 2200
+  },
+  "audio_settings": {
+    "ambient_volume": 0.15,
+    "interaction_volume": 0.4,
+    "narration_volume": 0.7,
+    "completion_volume": 0.5
+  }
+}

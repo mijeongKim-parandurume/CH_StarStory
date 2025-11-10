@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(copy \"c:\\Users\\MijeongKIM\\Parandurume\\Parandurume XR Kit - DemoDev - DemoDev\\Mijeong\\CH_StarStory\\script_v2.js\" \"c:\\Users\\MijeongKIM\\Parandurume\\Parandurume XR Kit - DemoDev - DemoDev\\Mijeong\\CH_StarStory\\script.js\" /Y)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

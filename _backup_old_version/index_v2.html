@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="별과 땅의 이야기 - 천상열차분야지도와 한국의 전설을 연결하는 인터랙티브 체험">
+    <title>별과 땅의 이야기 (Stories of Stars and the Land)</title>
+    <link rel="stylesheet" href="_backup_old_version/styles_v2.css">
+</head>
+<body>
+    <!-- Entry Transition Overlay -->
+    <div id="entry-transition" class="transition-overlay">
+        <div class="transition-text">이제, 하늘의 이야기가 땅으로 내려옵니다.</div>
+    </div>
+
+    <!-- Main Container -->
+    <main role="main" aria-label="별과 땅의 이야기 - 인터랙티브 지도">
+
+        <!-- Title Section -->
+        <header class="title-zone">
+            <h1 class="main-title">별과 땅의 이야기</h1>
+            <p class="subtitle">하늘의 별이 땅의 이야기로 이어진다</p>
+        </header>
+
+        <!-- Main Canvas -->
+        <section class="main-canvas" role="region" aria-label="한반도 지도">
+
+            <!-- Background Stars -->
+            <div class="background-stars" aria-hidden="true"></div>
+
+            <!-- Korean Peninsula Map - IMAGE VERSION -->
+            <div class="korea-map-container">
+                <!-- Option 1: PNG/JPG Image -->
+                <img src="assets/images/korea-map.png"
+                     alt="한반도 지도"
+                     class="korea-map-image"
+                     style="display: none;">
+
+                <!-- Option 2: Better SVG with actual coordinates -->
+                <svg class="korea-map-svg" viewBox="0 0 800 1000" aria-label="한반도 지도">
+                    <!-- Background glow effect -->
+                    <defs>
+                        <filter id="mapGlow">
+                            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+
+                        <linearGradient id="mapGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+                            <stop offset="100%" style="stop-color:#00D4FF;stop-opacity:0.3" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- More detailed Korean Peninsula shape -->
+                    <path class="map-outline-detailed"
+                          d="M 400 100
+                             L 420 120 L 430 145 L 435 170
+                             L 445 200 L 455 230
+                             Q 460 260, 465 290
+                             L 475 330 L 485 370
+                             Q 490 400, 495 430
+                             L 500 470 L 505 510
+                             Q 508 550, 510 590
+                             L 512 630 L 510 670
+                             Q 505 710, 495 750
+                             L 485 780 L 470 810
+                             Q 450 835, 425 850
+                             L 395 865 L 360 875
+                             Q 325 880, 290 875
+                             L 255 865 L 225 850
+                             Q 200 830, 185 805
+                             L 175 775 L 170 740
+                             Q 168 700, 170 660
+                             L 175 620 L 182 580
+                             Q 188 540, 195 500
+                             L 205 460 L 215 420
+                             Q 222 380, 230 340
+                             L 240 300 L 252 260
+                             Q 265 220, 280 180
+                             L 300 145 L 325 120
+                             Q 350 105, 375 100
+                             Z"
+                          fill="url(#mapGradient)"
+                          stroke="#00D4FF"
+                          stroke-width="2"
+                          filter="url(#mapGlow)" />
+
+                    <!-- Add decorative stars on the map -->
+                    <g class="map-decoration-stars">
+                        <circle cx="350" cy="200" r="1.5" fill="white" opacity="0.7"/>
+                        <circle cx="450" cy="350" r="1.5" fill="white" opacity="0.6"/>
+                        <circle cx="300" cy="500" r="1.5" fill="white" opacity="0.8"/>
+                        <circle cx="380" cy="650" r="1.5" fill="white" opacity="0.7"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Region Hotspots -->
+            <div class="hotspots-container">
+                <!-- Hotspots will be dynamically generated -->
+            </div>
+
+            <!-- Constellation Overlay with better visuals -->
+            <svg class="constellation-overlay" viewBox="0 0 800 1000" aria-hidden="true">
+                <defs>
+                    <!-- Star glow effect -->
+                    <filter id="starGlow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+
+                    <!-- Animated star sparkle -->
+                    <radialGradient id="starSparkle">
+                        <stop offset="0%" style="stop-color:white;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:white;stop-opacity:0" />
+                    </radialGradient>
+                </defs>
+                <!-- Constellations will be dynamically drawn -->
+            </svg>
+
+            <!-- Light Beams Container -->
+            <div class="light-beams-container" aria-hidden="true"></div>
+        </section>
+
+        <!-- Progress Zone -->
+        <aside class="progress-zone" role="status" aria-live="polite">
+            <div class="progress-orbs">
+                <!-- Progress orbs will be dynamically generated -->
+            </div>
+            <p class="progress-text">더 많은 이야기를 발견하세요</p>
+        </aside>
+
+        <!-- Story Modal with enhanced constellation view -->
+        <div id="story-modal" class="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button class="modal-close" aria-label="이야기 닫기">✕</button>
+
+                <div class="constellation-animation-container">
+                    <!-- Option 1: Use constellation images -->
+                    <img class="constellation-image" src="" alt="별자리" style="display: none;">
+
+                    <!-- Option 2: Enhanced SVG constellation -->
+                    <svg class="constellation-svg" viewBox="0 0 300 200" aria-hidden="true">
+                        <defs>
+                            <filter id="modalStarGlow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Constellation will be drawn here with enhanced effects -->
+                    </svg>
+                </div>
+
+                <div class="story-content">
+                    <div class="region-symbol" aria-hidden="true"></div>
+                    <h2 id="story-title" class="story-title"></h2>
+                    <h3 class="story-subtitle"></h3>
+
+                    <div class="story-text"></div>
+
+                    <div class="audio-player">
+                        <button class="audio-control" aria-label="음성 해설 재생/일시정지" aria-pressed="false">
+                            <span class="audio-icon">🔊</span>
+                            <span class="audio-label">음성 해설 듣기</span>
+                        </button>
+                        <div class="audio-progress">
+                            <div class="audio-progress-bar"></div>
+                        </div>
+                        <div class="audio-time">0:00</div>
+                    </div>
+
+                    <button class="next-story-btn">다른 하늘 이야기 보기 ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Overlay with Cheonsang Yeolcha pattern -->
+        <div id="completion-overlay" class="completion-overlay" style="display: none;">
+            <div class="completion-sky" aria-hidden="true">
+                <!-- Option: Add actual Cheonsang Yeolcha image -->
+                <img src="assets/images/cheonsang-yeolcha.png"
+                     alt="천상열차분야지도"
+                     class="cheonsang-image"
+                     style="display: none;">
+            </div>
+            <div class="completion-content">
+                <h2 class="completion-title">모든 별은, 우리 땅의 이야기였습니다.</h2>
+                <p class="completion-subtitle">우리의 하늘과 땅, 그 별빛은 아직도 이어지고 있습니다.</p>
+                <button class="return-btn">처음으로 돌아가기 ▶</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Audio Elements (hidden) -->
+    <!-- 오디오 파일이 없으면 주석 처리하세요 (콘솔 오류 제거) -->
+    <!--
+    <audio id="ambient-wind" loop preload="auto">
+        <source src="assets/audio/ambient/night_wind_loop.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="assets/audio/interaction/hover_shimmer.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="click-sound" preload="auto">
+        <source src="assets/audio/interaction/click_ting.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="narration-audio" preload="none">
+        <source will be set dynamically>
+    </audio>
+    <audio id="completion-music" preload="auto">
+        <source src="assets/audio/completion/orchestral_swell.mp3" type="audio/mpeg">
+    </audio>
+    -->
+
+    <!-- Scripts -->
+    <script src="_backup_old_version/script_v2.js"></script>
+</body>
+</html>

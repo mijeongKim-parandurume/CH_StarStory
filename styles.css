@@ -1,0 +1,1130 @@
+/* ===================================
+   별과 땅의 이야기 - Enhanced Stylesheet
+   이미지 에셋 지원 버전
+   =================================== */
+
+/* === CSS Variables === */
+:root {
+    /* Colors */
+    --bg-top: #0A1128;
+    --bg-bottom: #1F2A5A;
+    --map-outline: #00D4FF;
+    --hotspot-inactive: #FFE66D;
+    --hotspot-active: #FFFFFF;
+    --light-beam: #A0E7FF;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B8C5D6;
+
+    /* Timing */
+    --transition-fast: 200ms;
+    --transition-medium: 400ms;
+    --transition-slow: 800ms;
+
+    /* Spacing */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+}
+
+/* === Reset & Base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* === Screen Reader Only === */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* === Entry Transition === */
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #0A1128 0%, #1F2A5A 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeOutTransition 2.2s ease-in-out forwards;
+    pointer-events: none;
+}
+
+.transition-text {
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: textFadeInOut 2.2s ease-in-out;
+}
+
+@keyframes fadeOutTransition {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes textFadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* === Main Layout === */
+main {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === Title Zone === */
+.title-zone {
+    height: 10vh;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    opacity: 0;
+    animation: slideDown 800ms ease-out 1.8s forwards;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === Main Canvas === */
+.main-canvas {
+    position: relative;
+    flex: 1;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* === Background Stars === */
+.background-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.background-stars::before,
+.background-stars::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow:
+        100px 150px 0 0 rgba(255, 255, 255, 0.8),
+        250px 280px 0 0 rgba(255, 255, 255, 0.6),
+        400px 100px 0 0 rgba(255, 255, 255, 0.7),
+        550px 320px 0 0 rgba(255, 255, 255, 0.5),
+        150px 450px 0 0 rgba(255, 255, 255, 0.9),
+        680px 220px 0 0 rgba(255, 255, 255, 0.6),
+        300px 560px 0 0 rgba(255, 255, 255, 0.7),
+        480px 380px 0 0 rgba(255, 255, 255, 0.5),
+        620px 480px 0 0 rgba(255, 255, 255, 0.8),
+        200px 620px 0 0 rgba(255, 255, 255, 0.6),
+        750px 150px 0 0 rgba(255, 255, 255, 0.7),
+        350px 240px 0 0 rgba(255, 255, 255, 0.5),
+        520px 580px 0 0 rgba(255, 255, 255, 0.8),
+        180px 340px 0 0 rgba(255, 255, 255, 0.6),
+        720px 420px 0 0 rgba(255, 255, 255, 0.7);
+    animation: twinkle 4s infinite;
+}
+
+.background-stars::after {
+    animation-delay: 2s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* === ENHANCED Korea Map === */
+.korea-map-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 800px;
+    z-index: 2;
+    opacity: 0;
+    animation: mapFadeIn 1s ease-out 0.8s forwards;
+}
+
+/* Image-based map */
+.korea-map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5))
+            brightness(1.1)
+            contrast(1.2);
+    opacity: 0.8;
+}
+
+/* SVG-based map with enhanced effects */
+.korea-map-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.map-outline-detailed {
+    animation: mapPulse 3s ease-in-out infinite;
+}
+
+@keyframes mapPulse {
+    0%, 100% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.4));
+    }
+    50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
+    }
+}
+
+.map-decoration-stars circle {
+    animation: decorationTwinkle 3s infinite;
+}
+
+@keyframes decorationTwinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+@keyframes mapFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* === Hotspots - ENHANCED === */
+.hotspots-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 800px;
+    z-index: 3;
+}
+
+.hotspot {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: transform var(--transition-medium) ease-out;
+    opacity: 0;
+    animation: hotspotAppear 500ms ease-out forwards;
+}
+
+.hotspot:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 4px;
+}
+
+.hotspot-glow {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--hotspot-inactive) 0%, transparent 70%);
+    animation: hotspotPulse 800ms ease-in-out infinite;
+    /* Enhanced glow effect */
+    filter: blur(10px);
+}
+
+.hotspot.visited .hotspot-glow {
+    background: radial-gradient(circle, var(--hotspot-active) 0%, var(--hotspot-active) 20%, transparent 70%);
+    animation: visitedGlow 2s ease-in-out infinite;
+}
+
+@keyframes visitedGlow {
+    0%, 100% {
+        filter: blur(8px);
+        opacity: 0.8;
+    }
+    50% {
+        filter: blur(12px);
+        opacity: 1;
+    }
+}
+
+.hotspot-star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    filter: drop-shadow(0 0 8px rgba(255, 230, 109, 0.8));
+    animation: starRotate 4s linear infinite;
+}
+
+@keyframes starRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.hotspot-label {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(31, 42, 90, 0.8));
+    padding: 6px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hotspot:hover {
+    transform: translate(-50%, -50%) scale(1.4);
+}
+
+.hotspot:hover .hotspot-label {
+    opacity: 1;
+}
+
+.hotspot:hover .hotspot-star {
+    animation: starRotate 2s linear infinite, starBounce 0.6s ease-in-out;
+}
+
+@keyframes starBounce {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@keyframes hotspotPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+@keyframes hotspotAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* === Light Beams - ENHANCED === */
+.light-beam {
+    position: absolute;
+    width: 4px;
+    background: linear-gradient(to top,
+        rgba(160, 231, 255, 0.8) 0%,
+        rgba(160, 231, 255, 0.6) 30%,
+        rgba(160, 231, 255, 0.3) 60%,
+        transparent 100%);
+    filter: blur(3px);
+    box-shadow: 0 0 20px rgba(160, 231, 255, 0.6);
+    animation: beamRise 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    z-index: 4;
+}
+
+/* Add particle effects to beams */
+.light-beam::before,
+.light-beam::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: particleRise 1.5s ease-out forwards;
+}
+
+.light-beam::before {
+    left: -5px;
+    animation-delay: 0.2s;
+}
+
+.light-beam::after {
+    right: -5px;
+    animation-delay: 0.4s;
+}
+
+@keyframes beamRise {
+    from {
+        height: 0;
+        opacity: 1;
+    }
+    to {
+        height: 100vh;
+        opacity: 0;
+    }
+}
+
+@keyframes particleRise {
+    from {
+        bottom: 0;
+        opacity: 1;
+    }
+    to {
+        bottom: 100%;
+        opacity: 0;
+    }
+}
+
+/* === ENHANCED Constellation Overlay === */
+.constellation-overlay {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 800px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.constellation-star {
+    fill: white;
+    filter: url(#starGlow);
+    animation: starAppear 300ms ease-out forwards, starTwinkle 3s ease-in-out infinite;
+    opacity: 0;
+}
+
+.constellation-line {
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 600ms ease-out forwards;
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+@keyframes starAppear {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* === Progress Zone === */
+.progress-zone {
+    height: 10vh;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    z-index: 10;
+}
+
+.progress-orbs {
+    display: flex;
+    gap: 14px;
+}
+
+.progress-orb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all var(--transition-medium);
+    position: relative;
+}
+
+.progress-orb::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.progress-orb.discovered {
+    background: radial-gradient(circle, var(--hotspot-active) 0%, var(--hotspot-inactive) 100%);
+    border-color: var(--hotspot-active);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.9),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: orbGlow 400ms ease-out;
+}
+
+.progress-orb.discovered::before {
+    background: white;
+    box-shadow: 0 0 8px white;
+}
+
+@keyframes orbGlow {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.6);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.progress-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+/* === Story Modal - ENHANCED === */
+.story-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(15px);
+    animation: fadeIn var(--transition-medium);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 650px;
+    max-height: 90vh;
+    background: linear-gradient(135deg, rgba(31, 42, 90, 0.98), rgba(10, 17, 40, 0.98));
+    border-radius: 28px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    animation: modalSlideIn var(--transition-medium) ease-out;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6),
+                inset 0 0 60px rgba(0, 212, 255, 0.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close:hover {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.5);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.modal-close:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 2px;
+}
+
+/* === ENHANCED Constellation Animation === */
+.constellation-animation-container {
+    width: 100%;
+    height: 220px;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    border-radius: 16px;
+}
+
+.constellation-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px currentColor);
+    animation: constellationFloat 4s ease-in-out infinite;
+}
+
+@keyframes constellationFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.constellation-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* === Story Content - ENHANCED === */
+.story-content {
+    text-align: center;
+}
+
+.region-symbol {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    animation: symbolFadeIn 500ms ease-out 300ms both;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.story-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    animation: textSlideIn 500ms ease-out 400ms both;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.story-subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+    animation: textSlideIn 500ms ease-out 500ms both;
+}
+
+.story-text {
+    font-size: 1.15rem;
+    line-height: 2;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.story-text p {
+    margin-bottom: var(--spacing-md);
+    animation: textSlideIn 500ms ease-out both;
+}
+
+.story-text p:nth-child(1) { animation-delay: 600ms; }
+.story-text p:nth-child(2) { animation-delay: 700ms; }
+.story-text p:nth-child(3) { animation-delay: 800ms; }
+
+@keyframes symbolFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(-30deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes textSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === Audio Player - ENHANCED === */
+.audio-player {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.audio-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 150, 255, 0.1));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 14px;
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+}
+
+.audio-control:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(0, 150, 255, 0.2));
+    border-color: rgba(0, 212, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 212, 255, 0.3);
+}
+
+.audio-control:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 2px;
+}
+
+.audio-control.playing {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 140, 0, 0.2));
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.audio-control.playing .audio-icon {
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+.audio-progress {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.audio-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD93D, #FFA500, #FF6B9D);
+    width: 0;
+    transition: width 100ms linear;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.audio-time {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* === Next Story Button - ENHANCED === */
+.next-story-btn {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(135deg, #4A5FD9, #6B7FE8);
+    border: 2px solid rgba(107, 127, 232, 0.5);
+    border-radius: 14px;
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 6px 20px rgba(74, 95, 217, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.next-story-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.next-story-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.next-story-btn:hover {
+    background: linear-gradient(135deg, #5A6FE9, #7B8FF8);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(74, 95, 217, 0.5);
+    border-color: rgba(123, 143, 248, 0.7);
+}
+
+.next-story-btn:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 3px;
+}
+
+/* === ENHANCED Completion Overlay === */
+.completion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #0A1128 0%, #1F2A5A 100%);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: completionFadeIn 1s ease-out;
+}
+
+.completion-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Option 1: Use actual Cheonsang Yeolcha image */
+.cheonsang-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: cheonsangAppear 3s ease-out 1s forwards;
+    filter: brightness(1.3) contrast(1.1);
+}
+
+@keyframes cheonsangAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+}
+
+/* Option 2: CSS-based star field */
+.completion-sky::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(1px 1px at 33% 80%, white, transparent),
+        radial-gradient(2px 2px at 15% 55%, white, transparent);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    animation: skyBrighten 3s ease-out, starMove 20s linear infinite;
+}
+
+@keyframes completionFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes skyBrighten {
+    from {
+        opacity: 0;
+        filter: brightness(0.5);
+    }
+    to {
+        opacity: 1;
+        filter: brightness(1.8);
+    }
+}
+
+@keyframes starMove {
+    from {
+        background-position: 0% 0%;
+    }
+    to {
+        background-position: 100% 100%;
+    }
+}
+
+.completion-content {
+    position: relative;
+    text-align: center;
+    padding: var(--spacing-xl);
+    opacity: 0;
+    animation: completionTextAppear 1s ease-out 2.5s forwards;
+    z-index: 1;
+}
+
+.completion-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.8),
+                 0 0 20px rgba(0, 212, 255, 0.5);
+    letter-spacing: 0.05em;
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.6),
+                     0 0 15px rgba(0, 212, 255, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 50px rgba(255, 255, 255, 1),
+                     0 0 25px rgba(0, 212, 255, 0.7);
+    }
+}
+
+.completion-subtitle {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+    letter-spacing: 0.08em;
+}
+
+@keyframes completionTextAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.return-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: linear-gradient(135deg, #4A5FD9, #6B7FE8);
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 6px 24px rgba(74, 95, 217, 0.5);
+    opacity: 0;
+    animation: buttonAppear 500ms ease-out 3.5s forwards;
+}
+
+.return-btn:hover {
+    background: linear-gradient(135deg, #5A6FE9, #7B8FF8);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 35px rgba(74, 95, 217, 0.7);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.return-btn:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 4px;
+}
+
+@keyframes buttonAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* === Responsive Design === */
+
+/* Tablet Landscape */
+@media (max-width: 1279px) {
+    .main-title { font-size: 2rem; }
+    .subtitle { font-size: 1rem; }
+    .korea-map-container { width: 500px; height: 700px; }
+    .hotspots-container { width: 500px; height: 700px; }
+    .constellation-overlay { width: 500px; height: 700px; }
+}
+
+/* Tablet Portrait */
+@media (max-width: 1023px) {
+    .main-title { font-size: 1.8rem; }
+    .korea-map-container { width: 400px; height: 600px; }
+    .hotspots-container { width: 400px; height: 600px; }
+    .constellation-overlay { width: 400px; height: 600px; }
+    .modal-content { max-width: 550px; }
+}
+
+/* Mobile Large */
+@media (max-width: 767px) {
+    .title-zone { min-height: 60px; }
+    .main-title { font-size: 1.5rem; }
+    .subtitle { font-size: 0.9rem; }
+
+    .korea-map-container { width: 300px; height: 450px; }
+    .hotspots-container { width: 300px; height: 450px; }
+    .constellation-overlay { width: 300px; height: 450px; }
+
+    .hotspot { width: 50px; height: 50px; }
+    .hotspot-star { font-size: 24px; }
+
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+
+    .story-title { font-size: 1.6rem; }
+    .story-subtitle { font-size: 1.2rem; }
+    .story-text { font-size: 1.05rem; }
+
+    .completion-title { font-size: 2rem; }
+    .completion-subtitle { font-size: 1.2rem; }
+}
+
+/* Mobile Small */
+@media (max-width: 413px) {
+    .main-title { font-size: 1.3rem; }
+    .korea-map-container { width: 250px; height: 400px; }
+    .hotspots-container { width: 250px; height: 400px; }
+    .constellation-overlay { width: 250px; height: 400px; }
+
+    .story-title { font-size: 1.4rem; }
+    .completion-title { font-size: 1.7rem; }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
