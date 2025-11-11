@@ -128,17 +128,7 @@ body {
 /* ============================================================================
    Map Container
    ============================================================================ */
-.map-container {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
+/* Map container styles are now handled in styles.css for consistency */
 
 .loading {
     text-align: center;
@@ -153,13 +143,7 @@ body {
     50% { opacity: 1; }
 }
 
-/* SVG Container */
-.map-container svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    max-height: 80vh;
-}
+/* SVG Container - handled in styles.css */
 
 /* ============================================================================
    Region Styles (SVG Elements)
@@ -172,8 +156,17 @@ body {
         fill var(--transition-duration) ease,
         filter var(--transition-duration) ease;
     outline: none;
-    stroke: rgba(255, 255, 255, 0.2);
+    stroke: #000000;
     stroke-width: 1;
+    /* CRITICAL: Prevent stroke from scaling when transform is applied */
+    vector-effect: non-scaling-stroke;
+}
+
+/* Apply stroke to child paths in groups */
+.region path {
+    stroke: #000000;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
 }
 
 /* Hover state */
@@ -200,10 +193,16 @@ body {
 .region.active {
     /* NO transform - scale is applied via JS using SVG transform attribute */
     opacity: 1;
+    /* Glow effect - element is moved to end of SVG to prevent overlap */
     filter: var(--active-glow);
-    stroke: rgba(255, 255, 255, 0.6);
-    stroke-width: 2;
-    /* z-index doesn't work on SVG elements - use pointer-events instead */
+    stroke: #000000;
+    stroke-width: 1.5;
+    /* z-index doesn't work on SVG - we move element to end instead */
+}
+
+.region.active path {
+    stroke: #000000;
+    stroke-width: 1.5;
 }
 
 /* Ensure faded regions are still clickable */
