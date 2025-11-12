@@ -189,6 +189,18 @@ body {
     filter: none;
 }
 
+/* Visited state (previously clicked regions) */
+.region.visited {
+    /* Keep original color but slightly less opaque than active */
+    opacity: 0.85;
+    filter: brightness(0.95);
+    pointer-events: auto;
+}
+
+.region.visited path {
+    opacity: 0.85;
+}
+
 /* Active state (selected region) */
 .region.active {
     /* NO transform - scale is applied via JS using SVG transform attribute */
