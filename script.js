@@ -948,7 +948,7 @@ function processRegions() {
     });
 
     attachEventListeners();
-    renderProgressOrbs();
+    // renderProgressOrbs(); // Disabled - progress orbs hidden
 }
 
 // ============================================================================
@@ -1141,8 +1141,8 @@ function selectRegion(id) {
         y: bbox.y + bbox.height / 2
     };
 
-    // Create light beam effect
-    createEnhancedLightBeam(coordinates, svgRect);
+    // Create light beam effect (disabled)
+    // createEnhancedLightBeam(coordinates, svgRect);
 
     // Draw constellation in sky (disabled)
     // setTimeout(() => {
@@ -1157,7 +1157,7 @@ function selectRegion(id) {
     // Mark as visited
     if (!AppState.visitedRegions.has(id)) {
         AppState.visitedRegions.add(id);
-        updateProgressOrb(id);
+        // updateProgressOrb(id); // Disabled - progress orbs hidden
         checkCompletion();
     }
 
@@ -1600,7 +1600,7 @@ function resetExperience() {
     document.getElementById('completion-overlay').style.display = 'none';
     document.querySelector('.constellation-overlay').innerHTML = '';
 
-    renderProgressOrbs();
+    // renderProgressOrbs(); // Disabled - progress orbs hidden
     resetSelection();
     AudioManager.stop('completion');
 }
