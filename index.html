@@ -23,8 +23,10 @@
             <p class="subtitle">하늘의 별이 땅의 이야기로 이어진다</p>
         </header>
 
-        <!-- Main Canvas -->
-        <section class="main-canvas" role="region" aria-label="한반도 지도">
+        <!-- Layout Container -->
+        <div class="layout-container">
+            <!-- Left: Map Section -->
+            <section class="map-section" role="region" aria-label="한반도 지도">
 
             <!-- Background Stars -->
             <div class="background-stars" aria-hidden="true"></div>
@@ -57,7 +59,50 @@
 
             <!-- Light Beams Container -->
             <div class="light-beams-container" aria-hidden="true"></div>
-        </section>
+            </section>
+
+            <!-- Right: Story Panel -->
+            <aside id="story-panel" class="story-panel" role="complementary" aria-labelledby="story-title" style="display: none;">
+                <button class="panel-close" aria-label="이야기 닫기">✕</button>
+
+                <div class="constellation-animation-container">
+                    <!-- Constellation SVG in panel -->
+                    <svg class="constellation-svg" viewBox="0 0 300 200" aria-hidden="true">
+                        <defs>
+                            <filter id="panelStarGlow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Constellation will be drawn here -->
+                    </svg>
+                </div>
+
+                <div class="story-content">
+                    <div class="region-symbol" aria-hidden="true"></div>
+                    <h2 id="story-title" class="story-title"></h2>
+                    <h3 class="story-subtitle"></h3>
+
+                    <div class="story-text"></div>
+                </div>
+
+                <!-- Audio Controls (TTS) -->
+                <div class="audio-player">
+                    <button class="audio-control" aria-label="음성 해설 재생/일시정지" aria-pressed="false">
+                        <span class="audio-icon">🔊</span>
+                        <span class="audio-label">음성으로 듣기</span>
+                    </button>
+                    <div class="audio-progress">
+                        <div class="audio-progress-bar"></div>
+                    </div>
+                </div>
+
+                <button class="next-story-btn">다른 하늘 이야기 보기 ▶</button>
+            </aside>
+        </div>
 
         <!-- Progress Zone (Hidden) -->
         <aside class="progress-zone" role="status" aria-live="polite" style="display: none;">
@@ -67,8 +112,8 @@
             <p class="progress-text">지도에서 지역을 선택하세요</p>
         </aside>
 
-        <!-- Story Modal -->
-        <div id="story-modal" class="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title" style="display: none;">
+        <!-- Story Modal (Deprecated - using side panel now) -->
+        <div id="story-modal" class="story-modal" role="dialog" aria-modal="true" aria-labelledby="modal-story-title" style="display: none !important;">
             <div class="modal-overlay"></div>
             <div class="modal-content">
                 <button class="modal-close" aria-label="이야기 닫기">✕</button>

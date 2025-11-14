@@ -143,7 +143,8 @@ main {
 }
 
 /* === Main Canvas === */
-.main-canvas {
+.main-canvas,
+.map-section {
     position: relative;
     flex: 1;
     min-height: 75vh;
@@ -1144,6 +1145,80 @@ main {
 
     .story-title { font-size: 1.4rem; }
     .completion-title { font-size: 1.7rem; }
+}
+
+/* === New Layout: Map Left, Panel Right === */
+.layout-container {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 120px);
+    gap: 0;
+    position: relative;
+}
+
+.map-section {
+    flex: 0 0 60%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: flex var(--transition-medium);
+}
+
+.map-section.panel-open {
+    flex: 0 0 50%;
+}
+
+/* Story Panel (Right Side) */
+.story-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 45%;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(31, 42, 90, 0.98), rgba(10, 17, 40, 0.98));
+    border-left: 2px solid rgba(0, 212, 255, 0.3);
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    z-index: 900;
+    transform: translateX(100%);
+    transition: transform var(--transition-medium) ease-out;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5),
+                inset 0 0 60px rgba(0, 212, 255, 0.1);
+}
+
+.story-panel.open {
+    transform: translateX(0);
+}
+
+.panel-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.panel-close:hover {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.6);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.panel-close:focus {
+    outline: 3px solid var(--hotspot-active);
+    outline-offset: 2px;
 }
 
 /* Reduced Motion */

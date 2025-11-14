@@ -7,12 +7,19 @@
 // Configuration & Constants
 // ============================================================================
 
+// Get color mode from URL parameter (default to 'b')
+// ?mode=a - 방문한 지역 색상 유지 (Visited regions keep color)
+// ?mode=b - 선택된 지역만 색상 (Only selected region colored, others gray)
+const urlParams = new URLSearchParams(window.location.search);
+const colorMode = urlParams.get('mode') === 'a' ? 'a' : 'b';
+
 const CONFIG = {
     svgPath: `assets/KoreaMap.svg?v=${Date.now()}`,
     debounceDelay: 150,
     tooltipOffset: 15,
     enableParticles: true,
-    enableAdvancedEffects: true
+    enableAdvancedEffects: true,
+    colorMode: colorMode  // 'a' or 'b'
 };
 
 // ============================================================================
@@ -939,13 +946,19 @@ function processRegions() {
 
     console.log(`Processed ${AppState.regions.length} regions with stories`);
 
-    // Initialize all regions as gray/faded
-    AppState.regions.forEach(({ allElements }) => {
-        allElements.forEach(el => {
-            el.classList.add('fade');
+    // Initialize regions based on color mode
+    if (CONFIG.colorMode === 'a') {
+        // Mode A: Start with all regions gray/faded
+        AppState.regions.forEach(({ allElements }) => {
+            allElements.forEach(el => {
+                el.classList.add('fade');
+            });
+            applyGrayFill(allElements);
         });
-        applyGrayFill(allElements);
-    });
+    } else {
+        // Mode B: Keep all regions with their original colors on initial load
+        // No initialization needed - regions start with their natural SVG colors
+    }
 
     attachEventListeners();
     // renderProgressOrbs(); // Disabled - progress orbs hidden
@@ -1091,47 +1104,77 @@ function selectRegion(id) {
     AppState.visitedRegions.add(id);
     AudioManager.play('click', 0.4);
 
-    // Apply visual effects
-    AppState.regions.forEach(({ id: regionId, element, allElements }) => {
-        if (regionId === id) {
-            (allElements || [element]).forEach(el => {
-                applyScaleTransform(el, regionId, allElements.indexOf(el), 1.05);
-                el.classList.add('active');
-                el.classList.remove('fade', 'visited');
-                if (AppState.svg && el.parentNode === AppState.svg) {
-                    AppState.svg.appendChild(el);
-                }
-            });
-            element.setAttribute('aria-pressed', 'true');
-            restoreOriginalFill(allElements || [element], regionId);
-        } else {
-            // Check if this region has been visited before
-            const isVisited = AppState.visitedRegions.has(regionId);
-
-            (allElements || [element]).forEach(el => {
-                restoreOriginalTransform(el, regionId, allElements.indexOf(el));
-                el.classList.remove('active');
-
-                if (isVisited) {
-                    // Visited regions keep their original color
-                    el.classList.add('visited');
-                    el.classList.remove('fade');
-                } else {
-                    // Unvisited regions are faded
-                    el.classList.add('fade');
-                    el.classList.remove('visited');
-                }
-            });
-            element.setAttribute('aria-pressed', 'false');
-
-            // Apply appropriate fill based on visited status
-            if (isVisited) {
+    // Apply visual effects based on color mode
+    if (CONFIG.colorMode === 'a') {
+        // Mode A: Selected region highlighted, visited regions keep color, unvisited gray
+        AppState.regions.forEach(({ id: regionId, element, allElements }) => {
+            if (regionId === id) {
+                // Selected region: keep color + highlight
+                (allElements || [element]).forEach(el => {
+                    applyScaleTransform(el, regionId, allElements.indexOf(el), 1.05);
+                    el.classList.add('active');
+                    el.classList.remove('fade', 'visited');
+                    if (AppState.svg && el.parentNode === AppState.svg) {
+                        AppState.svg.appendChild(el);
+                    }
+                });
+                element.setAttribute('aria-pressed', 'true');
                 restoreOriginalFill(allElements || [element], regionId);
             } else {
+                // Check if this region has been visited before
+                const isVisited = AppState.visitedRegions.has(regionId);
+
+                (allElements || [element]).forEach(el => {
+                    restoreOriginalTransform(el, regionId, allElements.indexOf(el));
+                    el.classList.remove('active');
+
+                    if (isVisited) {
+                        // Visited regions keep their original color
+                        el.classList.add('visited');
+                        el.classList.remove('fade');
+                    } else {
+                        // Unvisited regions are faded
+                        el.classList.add('fade');
+                        el.classList.remove('visited');
+                    }
+                });
+                element.setAttribute('aria-pressed', 'false');
+
+                // Apply appropriate fill based on visited status
+                if (isVisited) {
+                    restoreOriginalFill(allElements || [element], regionId);
+                } else {
+                    applyGrayFill(allElements || [element]);
+                }
+            }
+        });
+    } else {
+        // Mode B: Selected region highlighted, all others grayed
+        AppState.regions.forEach(({ id: regionId, element, allElements }) => {
+            if (regionId === id) {
+                // Selected region: keep color + highlight
+                (allElements || [element]).forEach(el => {
+                    applyScaleTransform(el, regionId, allElements.indexOf(el), 1.05);
+                    el.classList.add('active');
+                    el.classList.remove('fade');
+                    if (AppState.svg && el.parentNode === AppState.svg) {
+                        AppState.svg.appendChild(el);
+                    }
+                });
+                element.setAttribute('aria-pressed', 'true');
+                restoreOriginalFill(allElements || [element], regionId);
+            } else {
+                // All other regions: gray out
+                (allElements || [element]).forEach(el => {
+                    restoreOriginalTransform(el, regionId, allElements.indexOf(el));
+                    el.classList.remove('active');
+                    el.classList.add('fade');
+                });
+                element.setAttribute('aria-pressed', 'false');
                 applyGrayFill(allElements || [element]);
             }
-        }
-    });
+        });
+    }
 
     // Get region coordinates from SVG element
     const bbox = regionData.element.getBBox();
@@ -1149,9 +1192,9 @@ function selectRegion(id) {
     //     drawConstellation(storyData, coordinates);
     // }, 300);
 
-    // Show modal
+    // Show panel
     setTimeout(() => {
-        showStoryModal(storyData);
+        showStoryPanel(storyData);
     }, 800);
 
     // Mark as visited
@@ -1226,15 +1269,29 @@ function resetSelection() {
     // Clear visited regions
     AppState.visitedRegions.clear();
 
-    AppState.regions.forEach(({ id: regionId, element, allElements }) => {
-        (allElements || [element]).forEach((el, index) => {
-            restoreOriginalTransform(el, regionId, index);
-            el.classList.remove('active', 'visited');
-            el.classList.add('fade');
+    // Reset regions based on color mode
+    if (CONFIG.colorMode === 'a') {
+        // Mode A: Reset all regions to gray
+        AppState.regions.forEach(({ id: regionId, element, allElements }) => {
+            (allElements || [element]).forEach((el, index) => {
+                restoreOriginalTransform(el, regionId, index);
+                el.classList.remove('active', 'visited');
+                el.classList.add('fade');
+            });
+            applyGrayFill(allElements || [element]);
+            element.setAttribute('aria-pressed', 'false');
         });
-        applyGrayFill(allElements || [element]);
-        element.setAttribute('aria-pressed', 'false');
-    });
+    } else {
+        // Mode B: Restore all regions to their original colors
+        AppState.regions.forEach(({ id: regionId, element, allElements }) => {
+            (allElements || [element]).forEach((el, index) => {
+                restoreOriginalTransform(el, regionId, index);
+                el.classList.remove('active', 'fade');
+            });
+            restoreOriginalFill(allElements || [element], regionId);
+            element.setAttribute('aria-pressed', 'false');
+        });
+    }
 }
 
 // ============================================================================
@@ -1346,6 +1403,278 @@ function drawConstellation(storyData, coordinates) {
 // Story Modal
 // ============================================================================
 
+// New panel version
+function showStoryPanel(storyData) {
+    const panel = document.getElementById('story-panel');
+    AppState.isModalOpen = true;
+
+    panel.style.borderColor = storyData.theme_color + '60';
+    panel.style.boxShadow = `
+        -10px 0 40px rgba(0, 0, 0, 0.5),
+        inset 0 0 60px ${storyData.theme_color}20
+    `;
+
+    drawPanelConstellation(storyData);
+
+    const regionSymbol = panel.querySelector('.region-symbol');
+    const title = panel.querySelector('#story-title');
+    const subtitle = panel.querySelector('.story-subtitle');
+    const storyTextContainer = panel.querySelector('.story-text');
+
+    regionSymbol.textContent = storyData.mini_symbol;
+    title.textContent = storyData.region_name_kr;
+    subtitle.textContent = storyData.story_title;
+
+    storyTextContainer.innerHTML = storyData.story_text_lines
+        .map(line => `<p>${line}</p>`)
+        .join('');
+
+    setupAudioPlayerPanel(storyData);
+
+    panel.style.display = 'block';
+    setTimeout(() => {
+        panel.classList.add('open');
+    }, 10);
+
+    const closeBtn = panel.querySelector('.panel-close');
+    const nextBtn = panel.querySelector('.next-story-btn');
+
+    closeBtn.onclick = closeStoryPanel;
+    nextBtn.onclick = closeStoryPanel;
+
+    panel.addEventListener('keydown', handlePanelKeydown);
+    closeBtn.focus();
+}
+
+function drawPanelConstellation(storyData) {
+    const svg = document.querySelector('#story-panel .constellation-svg');
+    svg.innerHTML = '';
+    svg.style.display = 'block';
+
+    // Check if constellation images are available
+    if (storyData.constellation_images && storyData.constellation_images.length > 0) {
+        // Use actual constellation images
+        const imageWidth = 80;
+        const imageHeight = 80;
+        const imageSpacing = 10;
+        const totalWidth = storyData.constellation_images.length * (imageWidth + imageSpacing) - imageSpacing;
+        const startX = (300 - totalWidth) / 2; // Center in viewBox
+        const startY = (200 - imageHeight) / 2;
+
+        storyData.constellation_images.forEach((imageName, index) => {
+            const xPos = startX + index * (imageWidth + imageSpacing);
+
+            // Add constellation image with strong glow (no background box)
+            const image = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            image.setAttribute('class', 'constellation-image-panel');
+            image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `assets/images/28/${imageName}`);
+            image.setAttribute('x', xPos);
+            image.setAttribute('y', startY);
+            image.setAttribute('width', imageWidth);
+            image.setAttribute('height', imageHeight);
+            // Force opacity inline
+            image.style.opacity = '1';
+            // Extreme brightness and strong glow for white constellation images
+            image.style.filter = `brightness(3) contrast(1.5) drop-shadow(0 0 20px ${storyData.theme_color}) drop-shadow(0 0 10px white) drop-shadow(0 0 5px white)`;
+            svg.appendChild(image);
+        });
+    } else {
+        // Fallback: Draw original SVG constellation shapes
+        const shape = storyData.constellation_shape;
+
+        // Draw connections
+        shape.connections.forEach(([start, end]) => {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'constellation-line');
+            line.setAttribute('x1', shape.stars[start].x);
+            line.setAttribute('y1', shape.stars[start].y);
+            line.setAttribute('x2', shape.stars[end].x);
+            line.setAttribute('y2', shape.stars[end].y);
+            line.setAttribute('stroke', storyData.theme_color);
+            line.setAttribute('filter', 'url(#panelStarGlow)');
+            svg.appendChild(line);
+        });
+
+        // Draw stars
+        shape.stars.forEach((star) => {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'constellation-star');
+            circle.setAttribute('cx', star.x);
+            circle.setAttribute('cy', star.y);
+            circle.setAttribute('r', '5');
+            circle.setAttribute('fill', storyData.theme_color);
+            circle.setAttribute('filter', 'url(#panelStarGlow)');
+            svg.appendChild(circle);
+        });
+    }
+}
+
+function setupAudioPlayerPanel(storyData) {
+    const audioControl = document.querySelector('#story-panel .audio-control');
+    const audioLabel = document.querySelector('#story-panel .audio-label');
+    const progressBar = document.querySelector('#story-panel .audio-progress-bar');
+
+    // Check if Web Speech API is supported
+    if (!('speechSynthesis' in window)) {
+        if (audioControl) {
+            audioControl.disabled = true;
+            audioControl.style.opacity = '0.5';
+            audioControl.style.cursor = 'not-allowed';
+            audioLabel.textContent = '음성 기능 미지원';
+        }
+        return;
+    }
+
+    // Get text content from story-content
+    const storyContent = document.querySelector('#story-panel .story-content');
+    const regionName = storyContent.querySelector('.story-title')?.textContent || '';
+    const storyTitle = storyContent.querySelector('.story-subtitle')?.textContent || '';
+    const storyTextElements = storyContent.querySelectorAll('.story-text p');
+    const storyText = Array.from(storyTextElements).map(p => p.textContent).join('. ');
+
+    // Combine all text
+    const fullText = `${regionName}. ${storyTitle}. ${storyText}`;
+
+    // Create speech synthesis utterance
+    let utterance = null;
+    let isSpeaking = false;
+
+    audioControl.classList.remove('playing');
+    audioControl.setAttribute('aria-pressed', 'false');
+    progressBar.style.width = '0%';
+
+    audioControl.onclick = () => {
+        if (isSpeaking && !speechSynthesis.paused) {
+            // Pause
+            speechSynthesis.pause();
+            audioControl.classList.remove('playing');
+            audioControl.setAttribute('aria-pressed', 'false');
+            audioLabel.textContent = '음성으로 듣기';
+        } else if (speechSynthesis.paused) {
+            // Resume
+            speechSynthesis.resume();
+            audioControl.classList.add('playing');
+            audioControl.setAttribute('aria-pressed', 'true');
+            audioLabel.textContent = '재생 중...';
+        } else {
+            // Start new speech
+            speechSynthesis.cancel(); // Cancel any ongoing speech
+
+            utterance = new SpeechSynthesisUtterance(fullText);
+            utterance.lang = 'ko-KR'; // Korean language
+            utterance.rate = 0.9; // Slightly slower for clarity
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+
+            // Get Korean voice if available
+            const voices = speechSynthesis.getVoices();
+            const koreanVoice = voices.find(voice => voice.lang.startsWith('ko')) || voices[0];
+            if (koreanVoice) {
+                utterance.voice = koreanVoice;
+            }
+
+            // Progress simulation (TTS doesn't provide real progress)
+            let progressInterval;
+            const estimatedDuration = fullText.length * 0.08; // Rough estimate: ~80ms per character
+            let currentProgress = 0;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                audioControl.classList.add('playing');
+                audioControl.setAttribute('aria-pressed', 'true');
+                audioLabel.textContent = '재생 중...';
+
+                // Simulate progress
+                currentProgress = 0;
+                progressInterval = setInterval(() => {
+                    currentProgress += (100 / estimatedDuration) * 100; // Update every 100ms
+                    if (currentProgress >= 100) {
+                        currentProgress = 99; // Don't reach 100 until actually done
+                    }
+                    progressBar.style.width = `${currentProgress}%`;
+                }, 100);
+            };
+
+            utterance.onend = () => {
+                isSpeaking = false;
+                audioControl.classList.remove('playing');
+                audioControl.setAttribute('aria-pressed', 'false');
+                audioLabel.textContent = '음성으로 듣기';
+                progressBar.style.width = '100%';
+
+                clearInterval(progressInterval);
+                setTimeout(() => {
+                    progressBar.style.width = '0%';
+                }, 500);
+            };
+
+            utterance.onerror = () => {
+                isSpeaking = false;
+                audioControl.classList.remove('playing');
+                audioControl.setAttribute('aria-pressed', 'false');
+                audioLabel.textContent = '음성으로 듣기';
+                progressBar.style.width = '0%';
+                clearInterval(progressInterval);
+            };
+
+            speechSynthesis.speak(utterance);
+        }
+    };
+}
+
+function closeStoryPanel() {
+    const panel = document.getElementById('story-panel');
+    panel.classList.remove('open');
+
+    setTimeout(() => {
+        panel.style.display = 'none';
+        AppState.isModalOpen = false;
+    }, 400);
+
+    // Stop TTS if playing
+    if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+    }
+    AudioManager.stop('narration');
+    panel.removeEventListener('keydown', handlePanelKeydown);
+
+    // Restore regions based on color mode
+    if (CONFIG.colorMode === 'a') {
+        // Mode A: Update the currently selected region to visited state (keep its color)
+        if (AppState.selectedRegion) {
+            const regionData = AppState.regions.find(r => r.id === AppState.selectedRegion);
+            if (regionData) {
+                const { element, allElements } = regionData;
+                (allElements || [element]).forEach((el, index) => {
+                    restoreOriginalTransform(el, AppState.selectedRegion, index);
+                    el.classList.remove('active');
+                    el.classList.add('visited');
+                });
+                element.setAttribute('aria-pressed', 'false');
+            }
+        }
+        AppState.selectedRegion = null;
+    } else {
+        // Mode B: Restore all regions to their original colors
+        AppState.regions.forEach(({ id: regionId, element, allElements }) => {
+            (allElements || [element]).forEach((el, index) => {
+                restoreOriginalTransform(el, regionId, index);
+                el.classList.remove('active', 'fade');
+            });
+            restoreOriginalFill(allElements || [element], regionId);
+            element.setAttribute('aria-pressed', 'false');
+        });
+        AppState.selectedRegion = null;
+    }
+}
+
+function handlePanelKeydown(e) {
+    if (e.key === 'Escape') {
+        closeStoryPanel();
+    }
+}
+
+// Old modal version (deprecated)
 function showStoryModal(storyData) {
     const modal = document.getElementById('story-modal');
     AppState.isModalOpen = true;
@@ -1660,6 +1989,18 @@ async function init() {
 
         // Initialize audio
         AudioManager.init();
+
+        // Initialize TTS voices (Web Speech API)
+        if ('speechSynthesis' in window) {
+            // Load voices (some browsers need this to be triggered)
+            speechSynthesis.getVoices();
+            // Listen for voices changed event (for browsers that load voices asynchronously)
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    speechSynthesis.getVoices();
+                };
+            }
+        }
 
         // Remove entry transition
         setTimeout(() => {
